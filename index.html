@@ -1,7 +1,3 @@
------
-
------
-
 <!-- jekyll disabled -->
 
 <!DOCTYPE html>
@@ -57,7 +53,8 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:'Nunito
 .app.visible{opacity:1}
 
 /* ── TOPBAR ── */
-.topbar{padding:14px 18px 10px;display:flex;align-items:center;justify-content:space-between;background:var(–bg);border-bottom:1px solid var(–border);flex-shrink:0}
+.topbar{padding:14px 18px 10px;display:flex;align-items:center;justify-content:space-between;background:var(–bg);border-bottom:1px solid var(–border);flex-shrink:0;overflow:hidden}
+.topbar-left{overflow:hidden;min-width:0}
 .topbar-left .page-title{font-family:‘Fraunces’,serif;font-size:1.5rem;font-weight:400;color:var(–text);font-style:italic;line-height:1.1}
 .topbar-left .greeting{font-size:0.82rem;color:#E07B52;font-weight:700;margin-top:2px}
 .mem-badge{padding:3px 10px;background:var(–gold-soft);border-radius:20px;font-size:0.72rem;color:var(–gold);font-weight:600;display:none}
@@ -74,7 +71,7 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:'Nunito
 .emo-filter.active{border-color:#E07B52;background:var(–accent-soft);color:#E07B52}
 
 /* ── CONTENT ── */
-.main{flex:1;display:flex;flex-direction:column;overflow:hidden}
+.main{flex:1;display:flex;flex-direction:column;overflow:hidden;position:relative}
 .content{flex:1;overflow-y:auto;padding:16px 16px 90px}
 .content::-webkit-scrollbar{width:3px}
 .content::-webkit-scrollbar-thumb{background:var(–border2);border-radius:2px}
@@ -347,6 +344,11 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:'Nunito
 .read-tags{display:flex;gap:8px;flex-wrap:wrap;justify-content:center;margin-top:24px}
 .read-tag{padding:5px 14px;background:var(–faint);border-radius:20px;font-size:0.8rem;color:var(–muted);font-weight:600}
 .read-weather{text-align:center;margin-top:16px;font-size:0.82rem;color:var(–muted)}
+
+/* Prevent any stray text between sections */
+.main > :not(.topbar):not(.search-bar):not(.content):not(#emoFilterBar) {
+display: none !important;
+}
 </style>
 
 </head>
@@ -387,10 +389,8 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:'Nunito
 
 ```
 <!-- SEARCH (journal only) -->
-<div class="search-bar" id="searchBar" style="display:block">
+<div class="search-bar" id="searchBar" style="display:block;flex-direction:column;gap:8px">
   <input class="search-input" id="searchInput" placeholder="🔍  Rechercher un souvenir…" oninput="filterMemories()" />
-</div>
-<div class="search-bar" id="emoFilterBar" style="padding-top:0;border-top:none">
   <div class="search-emotions" id="emoFilters"></div>
 </div>
 
@@ -727,7 +727,7 @@ function applyProfile() {
   const hr = new Date().getHours();
   const g = hr<12?'Bonjour':hr<18?'Bon après-midi':'Bonsoir';
   const el = document.getElementById('greeting');
-  if(el) el.textContent = prenom ? `${g}, ${prenom} 👋` : '';
+  if(el) el.textContent = prenom ? g + ', ' + prenom + ' 👋' : '';
   const ps = document.getElementById('profileSection');
   if(!ps) return;
   const nais = profile&&profile.naissance ? new Date(profile.naissance+'T00:00:00').toLocaleDateString('fr-FR',{day:'numeric',month:'long',year:'numeric'}) : null;
@@ -760,9 +760,7 @@ function doNav(id) {
   document.getElementById('bn-'+id).classList.add('active');
   document.getElementById('pageTitle').textContent={journal:'Journal',calendar:'Calendrier',settings:'Réglages'}[id];
   const sb = document.getElementById('searchBar');
-  const ef = document.getElementById('emoFilterBar');
-  sb.style.display = id==='journal' ? '' : 'none';
-  ef.style.display = id==='journal' ? '' : 'none';
+  if(sb) sb.style.display = id==='journal' ? '' : 'none';
   currentView = id;
   if(id==='calendar') renderCal();
 }

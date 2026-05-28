@@ -48,15 +48,19 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:'Nunito
 
 /* ── BOTTOM NAV (mobile-first) ── */
 .bottom-nav{
-position:fixed;bottom:0;left:0;right:0;height:70px;
-background:var(–bg);border-top:1px solid var(–border);
+position:fixed;bottom:0;left:0;right:0;height:76px;
+background:rgba(254,246,238,0.97);
+border-top:1.5px solid var(–border2);
+backdrop-filter:blur(12px);
+-webkit-backdrop-filter:blur(12px);
 display:flex;align-items:center;justify-content:space-around;
-z-index:50;padding-bottom:4px;
+z-index:50;padding-bottom:8px;
+box-shadow:0 -4px 24px rgba(180,120,80,0.1);
 }
 .bn-btn{
 display:flex;flex-direction:column;align-items:center;gap:3px;
 background:none;border:none;cursor:pointer;padding:8px 20px;
-color:var(–muted);transition:all 0.2s;border-radius:16px;
+color:#C4A882;transition:all 0.2s;border-radius:16px;
 }
 .bn-btn svg{width:22px;height:22px;stroke-width:1.8}
 .bn-label{font-size:0.65rem;font-weight:700;letter-spacing:0.04em}
@@ -72,12 +76,12 @@ background:var(–bg);border-bottom:1px solid var(–border);flex-shrink:0;
 .topbar-left .greeting{font-size:0.82rem;color:var(–accent);font-weight:700;margin-top:2px;font-family:‘Nunito’,sans-serif}
 .mem-badge{padding:3px 10px;background:var(–gold-soft);border-radius:20px;font-size:0.72rem;color:var(–gold);font-weight:600;display:none}
 
-.btn-add{display:flex;align-items:center;gap:6px;padding:11px 20px;background:var(–accent);color:white;border:none;border-radius:24px;font-family:‘Nunito’,sans-serif;font-size:0.82rem;font-weight:700;cursor:pointer;transition:all 0.2s;box-shadow:0 4px 14px rgba(212,132,90,0.25)}
+.btn-add{display:flex;align-items:center;gap:6px;padding:11px 20px;background:var(–accent);color:#fff;border:none;border-radius:24px;font-family:‘Nunito’,sans-serif;font-size:0.82rem;font-weight:700;cursor:pointer;transition:all 0.2s;box-shadow:0 4px 18px rgba(224,123,82,0.35)}
 .btn-add:hover{background:var(–accent2);transform:translateY(-1px)}
 
 /* ── MAIN ── */
 .main{flex:1;display:flex;flex-direction:column;overflow:hidden}
-.content{flex:1;overflow-y:auto;padding:20px 16px 90px}
+.content{flex:1;overflow-y:auto;padding:20px 16px 96px}
 .content::-webkit-scrollbar{width:3px}
 .content::-webkit-scrollbar-thumb{background:var(–border2);border-radius:2px}
 .view{display:none}.view.active{display:block}

@@ -3,7 +3,12 @@
 <html lang="fr">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="Mémoire">
+<meta name="theme-color" content="#FEF6EE">
+<link rel="apple-touch-icon" href="data:image/svg+xml,<svg width="512" height="512" viewBox="0 0 180 180" xmlns="http://www.w3.org/2000/svg"><defs><linearGradient id="appbg" x1="0%25" y1="0%25" x2="100%25" y2="100%25"><stop offset="0%25" stop-color="%23C97A52"/><stop offset="100%25" stop-color="%23A85A35"/></linearGradient><linearGradient id="photobg" x1="0%25" y1="0%25" x2="100%25" y2="100%25"><stop offset="0%25" stop-color="%238BAA88"/><stop offset="100%25" stop-color="%236A8A68"/></linearGradient></defs><rect width="180" height="180" rx="38" fill="url(%23appbg)"/><rect x="30" y="22" width="120" height="140" rx="5" fill="white"/><rect x="40" y="32" width="100" height="88" rx="3" fill="url(%23photobg)"/><path d="M90 118 Q89 100 90 82 Q91 65 90 38" stroke="rgba(255,255,255,0.5)" stroke-width="1.5" fill="none"/><path d="M90 95 Q72 87 66 76 Q80 82 90 92" fill="rgba(255,255,255,0.4)"/><path d="M90 95 Q108 87 114 76 Q100 82 90 92" fill="rgba(255,255,255,0.4)"/><path d="M90 74 Q74 66 69 55 Q82 61 90 71" fill="rgba(255,255,255,0.3)"/><path d="M90 74 Q106 66 111 55 Q98 61 90 71" fill="rgba(255,255,255,0.3)"/><g transform="translate(90,112)"><ellipse cx="0" cy="-9" rx="5" ry="8" fill="rgba(255,255,255,0.75)" transform="rotate(0)"/><ellipse cx="0" cy="-9" rx="5" ry="8" fill="rgba(255,255,255,0.75)" transform="rotate(60)"/><ellipse cx="0" cy="-9" rx="5" ry="8" fill="rgba(255,255,255,0.75)" transform="rotate(120)"/><ellipse cx="0" cy="-9" rx="5" ry="8" fill="rgba(255,255,255,0.75)" transform="rotate(180)"/><ellipse cx="0" cy="-9" rx="5" ry="8" fill="rgba(255,255,255,0.75)" transform="rotate(240)"/><ellipse cx="0" cy="-9" rx="5" ry="8" fill="rgba(255,255,255,0.75)" transform="rotate(300)"/><circle cx="0" cy="0" r="5.5" fill="white"/><circle cx="0" cy="0" r="3" fill="%23F5C890"/></g><g transform="translate(57,68)" opacity="0.8"><ellipse cx="0" cy="-6" rx="3.5" ry="5.5" fill="rgba(255,255,255,0.7)" transform="rotate(0)"/><ellipse cx="0" cy="-6" rx="3.5" ry="5.5" fill="rgba(255,255,255,0.7)" transform="rotate(60)"/><ellipse cx="0" cy="-6" rx="3.5" ry="5.5" fill="rgba(255,255,255,0.7)" transform="rotate(120)"/><ellipse cx="0" cy="-6" rx="3.5" ry="5.5" fill="rgba(255,255,255,0.7)" transform="rotate(180)"/><ellipse cx="0" cy="-6" rx="3.5" ry="5.5" fill="rgba(255,255,255,0.7)" transform="rotate(240)"/><ellipse cx="0" cy="-6" rx="3.5" ry="5.5" fill="rgba(255,255,255,0.7)" transform="rotate(300)"/><circle cx="0" cy="0" r="3.5" fill="white"/></g><rect x="40" y="120" width="100" height="30" fill="white"/><text x="90" y="140" text-anchor="middle" font-family="Georgia,serif" font-style="italic" font-size="13" fill="%23C97A52">mémoire</text></svg>">
 <title>Mémoire</title>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,500;1,9..144,300;1,9..144,400&family=Nunito+Sans:wght@300;400;500;600;700&family=Nunito:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
@@ -479,12 +484,8 @@ animation:cardIn 0.4s ease both;
       <div class="s-section">
         <div class="s-head">Rappels</div>
         <div class="s-row">
-          <div><div class="s-label">Rappel du dimanche</div><div class="s-desc">Invitation hebdomadaire à capturer un moment</div></div>
-          <button class="toggle on" onclick="this.classList.toggle('on')"></button>
-        </div>
-        <div class="s-row">
-          <div><div class="s-label">Heure</div></div>
-          <select class="s-select"><option>10:00</option><option selected>14:00</option><option>18:00</option><option>20:00</option></select>
+          <div><div class="s-label">Configurer le rappel du dimanche</div><div class="s-desc">Guide pour créer une notification hebdomadaire sur iOS</div></div>
+          <button class="btn-test" onclick="openReminderGuide()">Voir</button>
         </div>
         <div class="s-row">
           <div><div class="s-label">Rappels anniversaire</div><div class="s-desc">Revois tes souvenirs à la même date</div></div>
@@ -654,6 +655,72 @@ animation:cardIn 0.4s ease both;
       <button class="btn-secondary" onclick="closeEditProfile()">Annuler</button>
       <button class="btn-primary" onclick="saveProfile()">Enregistrer</button>
     </div>
+  </div>
+</div>
+
+<!-- REMINDER GUIDE MODAL -->
+
+<div class="overlay hidden center" id="reminderGuideOverlay">
+  <div class="anniv-modal" style="text-align:left;max-width:480px;padding:32px 28px">
+    <div style="text-align:center;margin-bottom:20px">
+      <span style="font-size:2rem">⏰</span>
+      <div style="font-family:'Fraunces',serif;font-size:1.4rem;font-style:italic;color:var(--text);margin-top:8px">Rappel du dimanche</div>
+      <div style="font-size:0.8rem;color:var(--muted);margin-top:4px">Sans appli native, voici comment créer un vrai rappel hebdomadaire sur ton iPhone</div>
+    </div>
+
+```
+<div style="display:flex;flex-direction:column;gap:14px;margin-bottom:24px">
+
+  <div style="display:flex;gap:14px;align-items:flex-start">
+    <div style="width:32px;height:32px;border-radius:50%;background:var(--accent);color:white;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:0.9rem;flex-shrink:0">1</div>
+    <div>
+      <div style="font-size:0.9rem;font-weight:700;color:var(--text);margin-bottom:3px">Ouvre l'app Raccourcis</div>
+      <div style="font-size:0.8rem;color:var(--muted);line-height:1.5">Sur ton iPhone → cherche <strong>Raccourcis</strong> (icône orange avec des engrenages)</div>
+    </div>
+  </div>
+
+  <div style="display:flex;gap:14px;align-items:flex-start">
+    <div style="width:32px;height:32px;border-radius:50%;background:var(--accent);color:white;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:0.9rem;flex-shrink:0">2</div>
+    <div>
+      <div style="font-size:0.9rem;font-weight:700;color:var(--text);margin-bottom:3px">Onglet Automatisations</div>
+      <div style="font-size:0.8rem;color:var(--muted);line-height:1.5">En bas → appuie sur <strong>Automatisations</strong> puis le <strong>+</strong> en haut à droite</div>
+    </div>
+  </div>
+
+  <div style="display:flex;gap:14px;align-items:flex-start">
+    <div style="width:32px;height:32px;border-radius:50%;background:var(--accent);color:white;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:0.9rem;flex-shrink:0">3</div>
+    <div>
+      <div style="font-size:0.9rem;font-weight:700;color:var(--text);margin-bottom:3px">Choisir "Heure du jour"</div>
+      <div style="font-size:0.8rem;color:var(--muted);line-height:1.5">Sélectionne <strong>"Heure du jour"</strong> → règle sur <strong>dimanche à 14h00</strong> → active <strong>"Répéter chaque semaine"</strong></div>
+    </div>
+  </div>
+
+  <div style="display:flex;gap:14px;align-items:flex-start">
+    <div style="width:32px;height:32px;border-radius:50%;background:var(--accent);color:white;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:0.9rem;flex-shrink:0">4</div>
+    <div>
+      <div style="font-size:0.9rem;font-weight:700;color:var(--text);margin-bottom:3px">Ajouter une action "Notification"</div>
+      <div style="font-size:0.8rem;color:var(--muted);line-height:1.5">Appuie sur <strong>"Ajouter une action"</strong> → cherche <strong>"Notification"</strong> → écris le message :<br><em style="color:var(--accent)">"✨ Un souvenir cette semaine ?"</em></div>
+    </div>
+  </div>
+
+  <div style="display:flex;gap:14px;align-items:flex-start">
+    <div style="width:32px;height:32px;border-radius:50%;background:var(--accent);color:white;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:0.9rem;flex-shrink:0">5</div>
+    <div>
+      <div style="font-size:0.9rem;font-weight:700;color:var(--text);margin-bottom:3px">Désactive "Demander avant d'exécuter"</div>
+      <div style="font-size:0.8rem;color:var(--muted);line-height:1.5">Important ! Mets ce toggle sur <strong>OFF</strong> pour que la notification parte automatiquement sans confirmation</div>
+    </div>
+  </div>
+
+</div>
+
+<div style="background:var(--gold-soft);border-radius:16px;padding:14px 16px;margin-bottom:20px">
+  <div style="font-size:0.78rem;color:var(--gold);font-weight:700;margin-bottom:4px">✅ Résultat</div>
+  <div style="font-size:0.82rem;color:var(--muted);line-height:1.5">Chaque dimanche à 14h, ton iPhone affichera une notification. En appuyant dessus, tu pourras ouvrir Mémoire directement.</div>
+</div>
+
+<button class="btn-anniv" onclick="closeReminderGuide()">C'est compris !</button>
+```
+
   </div>
 </div>
 
@@ -1011,6 +1078,14 @@ function showAnniv(){
   document.getElementById('annivOverlay').classList.remove('hidden');
 }
 function closeAnniv(){document.getElementById('annivOverlay').classList.add('hidden');}
+
+// ── REMINDER GUIDE ──────────────────────────────────
+function openReminderGuide() {
+  document.getElementById('reminderGuideOverlay').classList.remove('hidden');
+}
+function closeReminderGuide() {
+  document.getElementById('reminderGuideOverlay').classList.add('hidden');
+}
 
 // ── CLEAR ───────────────────────────────────────────
 function clearAll(){if(!confirm('Effacer tous les souvenirs ?'))return;memories=[];persist();renderGrid();updateBadge();renderCal();}

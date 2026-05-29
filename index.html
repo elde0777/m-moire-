@@ -202,11 +202,13 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:"Nunito
 .f-textarea{min-height:80px;resize:vertical;line-height:1.6}
 .f-row{display:grid;grid-template-columns:1fr 1fr;gap:10px}
 .emotion-grid{display:flex;flex-wrap:wrap;gap:8px}
-.em-chip{padding:9px 16px;border-radius:50px;border:1.5px solid var(–border);background:var(–faint);font-size:0.85rem;cursor:pointer;transition:all 0.2s;display:flex;align-items:center;gap:5px;color:var(–muted);font-weight:500}
-.em-chip:hover,.em-chip.sel{border-color:#E07B52;background:var(–accent-soft);color:#E07B52}
+.em-chip{padding:9px 16px;border-radius:50px;border:1.5px solid var(–border);background:var(–faint);font-size:0.85rem;cursor:pointer;transition:all 0.25s;display:flex;align-items:center;gap:5px;color:var(–muted);font-weight:500;opacity:0.7}
+.em-chip:hover{opacity:1;border-color:#E07B52;background:var(–accent-soft);color:#E07B52}
+.em-chip.sel{border-color:#E07B52;background:#E07B52;color:white;font-weight:700;opacity:1;box-shadow:0 4px 16px rgba(224,123,82,0.4);transform:scale(1.06)}
 .illus-grid{display:flex;flex-wrap:wrap;gap:8px}
-.illus-chip{width:52px;height:52px;border-radius:18px;border:1.5px solid var(–border);background:var(–faint);font-size:1.5rem;cursor:pointer;transition:all 0.2s;display:flex;align-items:center;justify-content:center}
-.illus-chip:hover,.illus-chip.sel{border-color:#E07B52;background:var(–accent-soft);transform:scale(1.1)}
+.illus-chip{width:52px;height:52px;border-radius:18px;border:1.5px solid var(–border);background:var(–faint);font-size:1.5rem;cursor:pointer;transition:all 0.25s;display:flex;align-items:center;justify-content:center;opacity:0.6;filter:grayscale(20%)}
+.illus-chip:hover{opacity:0.9;border-color:var(–border2);transform:scale(1.08);filter:none}
+.illus-chip.sel{border-color:#E07B52;background:#E07B52;transform:scale(1.15);opacity:1;box-shadow:0 6px 20px rgba(224,123,82,0.45);filter:none;border-width:2px}
 .color-grid{display:flex;gap:10px;flex-wrap:wrap}
 .col-swatch{width:32px;height:32px;border-radius:50%;cursor:pointer;border:2px solid transparent;transition:all 0.2s;display:flex;align-items:center;justify-content:center;font-size:0.7rem;font-weight:700;color:white}
 .col-swatch:hover{transform:scale(1.15)}
@@ -481,8 +483,31 @@ display: none !important;
         <div class="s-row"><div><div class="s-label">Rappels anniversaire</div><div class="s-desc">Revois tes souvenirs à la même date</div></div><button class="toggle on" onclick="this.classList.toggle('on')"></button></div>
       </div>
       <div class="s-section">
-        <div class="s-head">Export</div>
-        <div class="s-row"><div><div class="s-label">Exporter tous mes souvenirs</div><div class="s-desc">Télécharger en texte pour sauvegarder</div></div><button class="btn-test" onclick="openExport()">Exporter</button></div>
+        <div class="s-head">Sauvegarde</div>
+
+        <!-- Explication JSON -->
+        <div style="background:#FBF0E6;border-radius:16px;padding:14px 16px;margin-bottom:16px;border-left:3px solid #E07B52">
+          <div style="font-size:0.82rem;font-weight:700;color:#E07B52;margin-bottom:6px">💡 Pourquoi sauvegarder ?</div>
+          <div style="font-size:0.78rem;color:#A08468;line-height:1.6">
+            Tes souvenirs sont stockés uniquement sur ce navigateur. Si tu vides Safari, changes de téléphone ou réinstalles l'appli, <strong style="color:#2A1A0E">tu perds tout</strong>.<br><br>
+            Le bouton <strong style="color:#2A1A0E">Sauvegarder</strong> télécharge un fichier <strong style="color:#2A1A0E">.json</strong> — c'est un fichier texte qui contient tous tes souvenirs. Garde-le dans tes <strong style="color:#2A1A0E">Fichiers iPhone</strong>, par email ou dans iCloud.<br><br>
+            Pour restaurer, utilise <strong style="color:#2A1A0E">Importer</strong> et sélectionne ton fichier .json sauvegardé.
+          </div>
+        </div>
+
+        <div class="s-row">
+          <div><div class="s-label">Exporter mes souvenirs</div><div class="s-desc">Télécharger un fichier .json de sauvegarde</div></div>
+          <button class="btn-test" onclick="exportJSON()">💾 Sauvegarder</button>
+        </div>
+        <div class="s-row">
+          <div><div class="s-label">Importer une sauvegarde</div><div class="s-desc">Restaurer depuis un fichier .json</div></div>
+          <button class="btn-test" onclick="document.getElementById('importFile').click()">📂 Importer</button>
+        </div>
+        <div class="s-row">
+          <div><div class="s-label">Copier en texte</div><div class="s-desc">Copier tous les souvenirs dans le presse-papier</div></div>
+          <button class="btn-test" onclick="openExport()">📋 Copier</button>
+        </div>
+        <input type="file" id="importFile" accept=".json" style="display:none" onchange="importJSON(event)" />
       </div>
       <div class="s-section">
         <div class="s-head">Apparence</div>
@@ -659,6 +684,20 @@ display: none !important;
   <div class="read-content" id="readContent"></div>
 </div>
 
+<!-- BACKUP BANNER -->
+
+<div id="backupBanner" style="display:none;position:fixed;bottom:80px;left:12px;right:12px;background:white;border:1.5px solid #D4A86A;border-radius:20px;padding:14px 16px;z-index:100;align-items:center;gap:12px;box-shadow:0 4px 20px rgba(180,120,80,0.15)">
+  <div style="font-size:1.4rem;flex-shrink:0">💾</div>
+  <div style="flex:1">
+    <div style="font-size:0.85rem;font-weight:700;color:#2A1A0E;margin-bottom:2px">Sauvegarde recommandée</div>
+    <div style="font-size:0.75rem;color:#A08468;line-height:1.4">Télécharge tes souvenirs pour ne pas les perdre</div>
+  </div>
+  <div style="display:flex;gap:8px;flex-shrink:0">
+    <button onclick="doBackupAndDismiss()" style="padding:8px 14px;background:#E07B52;color:white;border:none;border-radius:12px;font-family:'Nunito',sans-serif;font-size:0.78rem;font-weight:700;cursor:pointer">Sauvegarder</button>
+    <button onclick="dismissBackup()" style="padding:8px 12px;background:#FBF0E6;color:#A08468;border:none;border-radius:12px;font-family:'Nunito',sans-serif;font-size:0.78rem;cursor:pointer">Plus tard</button>
+  </div>
+</div>
+
 <!-- NOTIF -->
 
 <div class="notif hidden" id="notif" onclick="openNew();hideNotif()">
@@ -670,7 +709,7 @@ display: none !important;
 // ── DATA ──────────────────────────────────────────────
 let memories = [];
 let profile = null;
-try { memories = JSON.parse(localStorage.getItem('mem_v4') || '[]'); } catch(e){}
+try { memories = JSON.parse(localStorage.getItem('mem_v1') || '[]'); } catch(e){}
 try { 
   profile = JSON.parse(localStorage.getItem('mem_profile') || 'null');
   // Sanitize profile fields
@@ -695,9 +734,9 @@ const EMOTIONS = [
 ];
 const ILLUS = ['🌸','🌿','🌙','⭐','🌊','🏔','🌅','🍂','☁️','🦋','🕊','🌻','🍃','🌈','❄️','🔥','🌺','🪐','🍀','🐚'];
 const COLORS = [
-  {c:'#F0E2D0',n:'Neutre'},{c:'#FDEEE5',n:'Terracotta'},{c:'#E8F0E8',n:'Vert'},
-  {c:'#E8EAF5',n:'Bleu'},{c:'#F5E8F0',n:'Rose'},{c:'#F5F3E0',n:'Soleil'},
-  {c:'#E8F5F5',n:'Turquoise'},{c:'#2D2018',n:'Sombre'}
+  {c:'#DEB887',n:'Sable'},{c:'#E07B52',n:'Terracotta'},{c:'#6BAF7A',n:'Vert'},
+  {c:'#5B8DD9',n:'Bleu'},{c:'#D96BA0',n:'Rose'},{c:'#E8B84B',n:'Soleil'},
+  {c:'#4BBFBF',n:'Turquoise'},{c:'#2D2018',n:'Sombre'}
 ];
 const GENRES = ['Homme','Femme','Non-binaire','Autre','Préfère ne pas dire'];
 
@@ -779,7 +818,7 @@ function updateBadge() {
   if(memories.length){b.style.display='';b.textContent=memories.length+' souvenir'+(memories.length>1?'s':'');}
   else b.style.display='none';
 }
-function persist(){ try{localStorage.setItem('mem_v4',JSON.stringify(memories));}catch(e){} }
+function persist(){ try{localStorage.setItem('mem_v1',JSON.stringify(memories));}catch(e){} }
 
 // ── THIS DAY ──────────────────────────────────────────
 function checkThisDay() {
@@ -912,9 +951,18 @@ function renderGrid() {
     const ds=d.toLocaleDateString('fr-FR',{day:'numeric',month:'long',year:'numeric'});
     const anniv=getAnniv(m.date);
     const card=document.createElement('div'); card.className='mem-card'; card.style.animationDelay=(i*0.04)+'s';
-    if(m.color && m.color !== '#F0E2D0') { 
-      card.style.borderColor=m.color; 
-      card.style.background=m.color==='#2D2018' ? '#2D2018' : m.color+'33';
+    if(m.color && m.color !== '#F0E2D0') {
+      if(m.color === '#2D2018') {
+        card.style.borderColor='#2D2018';
+        card.style.background='#2D2018';
+        card.style.borderWidth='3px';
+      } else {
+        // Make border much more vivid by darkening the color
+        card.style.borderColor=m.color;
+        card.style.borderWidth='3px';
+        card.style.background=m.color+'55';
+        card.style.boxShadow='0 4px 20px ' + m.color + '80';
+      }
     }
     const textColor = m.color==='#2D2018' ? 'color:white' : '';
     let mediaHtml='';
@@ -1022,6 +1070,87 @@ function renderYear() {
 function yearMove(d){ yearY+=d; renderYear(); }
 
 // ── EXPORT ────────────────────────────────────────────
+// ── EXPORT JSON ───────────────────────────────────────
+function exportJSON() {
+  try {
+    const data = JSON.stringify(memories, null, 2);
+    const blob = new Blob([data], {type: 'application/json'});
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    const date = new Date().toISOString().split('T')[0];
+    a.href = url;
+    a.download = 'memoire-sauvegarde-' + date + '.json';
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+  } catch(e) {
+    // Fallback: copy to clipboard
+    try {
+      navigator.clipboard.writeText(JSON.stringify(memories, null, 2))
+        .then(() => alert('✅ Données copiées dans le presse-papier !\nColle-les dans un fichier .json pour les garder.'))
+        .catch(() => alert('Erreur lors de la copie.'));
+    } catch(e2) { alert('Erreur export: ' + e2); }
+  }
+}
+
+function importJSON(event) {
+  try {
+    const file = event.target.files[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = function(e) {
+      try {
+        const imported = JSON.parse(e.target.result);
+        if (!Array.isArray(imported)) { alert('❌ Fichier invalide.'); return; }
+        const existing = memories.map(m => m.id);
+        let added = 0;
+        imported.forEach(m => {
+          if (!existing.includes(m.id)) { memories.push(m); added++; }
+        });
+        // Sort by date desc
+        memories.sort((a,b) => new Date(b.date) - new Date(a.date));
+        persist();
+        renderGrid();
+        updateBadge();
+        buildEmoFilters();
+        alert('✅ ' + added + ' souvenir(s) importé(s) avec succès !');
+      } catch(err) { alert('❌ Erreur lors de la lecture du fichier.'); }
+    };
+    reader.readAsText(file);
+    // Reset input
+    event.target.value = '';
+  } catch(e) { alert('Erreur import: ' + e); }
+}
+
+// ── AUTO-BACKUP CHECK ──────────────────────────────────
+function checkAutoBackup() {
+  try {
+    const lastBackup = localStorage.getItem('mem_last_backup');
+    const now = Date.now();
+    // Suggest backup every 7 days if there are memories
+    if (memories.length > 0 && (!lastBackup || now - parseInt(lastBackup) > 7 * 24 * 60 * 60 * 1000)) {
+      setTimeout(() => {
+        const banner = document.getElementById('backupBanner');
+        if (banner) banner.style.display = 'flex';
+      }, 2000);
+    }
+  } catch(e) {}
+}
+
+function dismissBackup() {
+  try { localStorage.setItem('mem_last_backup', Date.now()); } catch(e) {}
+  const banner = document.getElementById('backupBanner');
+  if (banner) banner.style.display = 'none';
+}
+
+function doBackupAndDismiss() {
+  exportJSON();
+  try { localStorage.setItem('mem_last_backup', Date.now()); } catch(e) {}
+  const banner = document.getElementById('backupBanner');
+  if (banner) banner.style.display = 'none';
+}
+
 function openExport() {
   const preview=document.getElementById('exportPreview');
   if(!memories.length){ preview.innerHTML='<p style="color:var(--muted);text-align:center;padding:20px">Aucun souvenir à exporter.</p>'; }
@@ -1210,21 +1339,19 @@ function shareCurrentRead() {
 }
 
 // ── CLEANUP OLD DATA ──────────────────────────────────
-// ── CLEANUP OLD DATA ──────────────────────────────────
+// ── MIGRATE OLD DATA (one-time, never deletes) ────────
 (function() {
   try {
-    // Remove old keys from previous versions that had ``` artifacts
-    ['mem_v3', 'mem_v2', 'mem_v1'].forEach(k => localStorage.removeItem(k));
-    // Sanitize current memories - remove any ``` artifacts from titles/text
-    let changed = false;
-    memories = memories.map(m => {
-      const clean = {...m};
-      if (clean.title) clean.title = clean.title.replace(/`{2,}/g, '').replace(/'{3,}/g, '').trim();
-      if (clean.text) clean.text = clean.text.replace(/`{2,}/g, '').replace(/'{3,}/g, '').trim();
-      if (clean.title !== m.title || clean.text !== m.text) changed = true;
-      return clean;
-    });
-    if (changed) persist();
+    // Migrate from old keys if mem_v1 is empty
+    if (!memories.length) {
+      ['mem_v4','mem_v3','mem_v2'].forEach(k => {
+        if (memories.length) return;
+        try {
+          const old = JSON.parse(localStorage.getItem(k) || '[]');
+          if (old.length) { memories = old; persist(); }
+        } catch(e) {}
+      });
+    }
   } catch(e) {}
 })();
 
@@ -1340,7 +1467,7 @@ function shareCurrentRead() {
 
 // ── START ─────────────────────────────────────────────
 applyDark();
-renderGrid(); updateBadge(); checkThisDay(); buildEmoFilters(); renderCal(); renderStreak();
+renderGrid(); updateBadge(); checkThisDay(); buildEmoFilters(); renderCal(); renderStreak(); checkAutoBackup();
 </script>
 
 </body>
